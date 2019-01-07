@@ -71,21 +71,33 @@ bool CThreadAnalysisFile::OnThreadEventRun(LPVOID lpParam)
         CFileStatus TargetFileStatus;
         fTargetFile.GetStatus(TargetFileStatus);
 
-        CString csFileFullName = TargetFileStatus.m_szFullName;
-        pstTargetFileInfo->csCreatTime_.Format(_T("%d:%d:%d, %d.%d.%d"),
-                                         TargetFileStatus.m_ctime.GetHour(),
-                                         TargetFileStatus.m_ctime.GetMinute(),
-                                         TargetFileStatus.m_ctime.GetSecond(),
-                                         TargetFileStatus.m_ctime.GetDay(),
-                                         TargetFileStatus.m_ctime.GetMonth(),
-                                         TargetFileStatus.m_ctime.GetYear());
-        pstTargetFileInfo->csLastAccessedTime_.Format(_T("%d:%d:%d, %d.%d.%d"),
-                                         TargetFileStatus.m_atime.GetHour(),
-                                         TargetFileStatus.m_atime.GetMinute(),
-                                         TargetFileStatus.m_atime.GetSecond(),
-                                         TargetFileStatus.m_atime.GetDay(),
-                                         TargetFileStatus.m_atime.GetMonth(),
-                                         TargetFileStatus.m_atime.GetYear());
+        CPath pathFilePath = pPEOperatorDlg->GetTargetFileName();
+        CPath pathFileName = pPEOperatorDlg->GetTargetFileName();
+        pathFileName.StripPath();
+        pathFilePath.RemoveFileSpec();
+
+        // File path and name.
+        pstTargetFileInfo->csFileName_ = pathFileName.m_strPath;
+        pstTargetFileInfo->csFilePath_ = pathFilePath.m_strPath;
+
+        // Carete time.
+        pstTargetFileInfo->csCreatTime_.Format(
+            _T("%d:%d:%d, %d.%d.%d"),
+            TargetFileStatus.m_ctime.GetHour(),
+            TargetFileStatus.m_ctime.GetMinute(),
+            TargetFileStatus.m_ctime.GetSecond(),
+            TargetFileStatus.m_ctime.GetDay(),
+            TargetFileStatus.m_ctime.GetMonth(),
+            TargetFileStatus.m_ctime.GetYear());
+
+        pstTargetFileInfo->csLastAccessedTime_.Format(
+            _T("%d:%d:%d, %d.%d.%d"),
+            TargetFileStatus.m_atime.GetHour(),
+            TargetFileStatus.m_atime.GetMinute(),
+            TargetFileStatus.m_atime.GetSecond(),
+            TargetFileStatus.m_atime.GetDay(),
+            TargetFileStatus.m_atime.GetMonth(),
+            TargetFileStatus.m_atime.GetYear());
         pstTargetFileInfo->csLastModifyTime_.Format(_T("%d:%d:%d, %d.%d.%d"),
                                          TargetFileStatus.m_mtime.GetHour(),
                                          TargetFileStatus.m_mtime.GetMinute(),
@@ -140,18 +152,37 @@ bool CThreadAnalysisFile::OnThreadEventRun(LPVOID lpParam)
             // Create struct of PE file 32bit.
             if (0x10b == wOptionalHeaderType)
             {
-                //******************************************************
+                //**************************************************************
                 //* Alarm * This memory will free when main dialog close.
-                //******************************************************
+                //**************************************************************
                 PPEFILESTRUCT32 pstPEFileStruct32 = new PEFILESTRUCT32;
                 pstPEFileStruct32->stDosHeader_ = stDosHeader;
 
                 // Read NT headers.
-                fTargetFile.Read(&pstPEFileStruct32->stNtHeaer_,
-                                sizeof(pstPEFileStruct32->stNtHeaer_));
+                fTargetFile.Read(&pstPEFileStruct32->stNtHeader_,
+                                sizeof(pstPEFileStruct32->stNtHeader_));
 
                 // Main dislog gets the PE file info.
                 pPEOperatorDlg->SetPEFileStruct32(pstPEFileStruct32);
+
+                // Read section info.
+                WORD wSectionNumber = 
+                    pstPEFileStruct32->stNtHeader_.FileHeader.NumberOfSections;
+                WORD cntI = 0;
+                while (cntI < wSectionNumber)
+                {
+                    //**********************************************************
+                    //* Alarm * This memory will free when 
+                    //          CPESectionInfo destroy.
+                    //**********************************************************
+                    IMAGE_SECTION_HEADER stSectionInfo = { 0 };
+
+                    fTargetFile.Read(&stSectionInfo,
+                                     sizeof(stSectionInfo));
+
+                    pPEOperatorDlg->m_vctSectionInfo.push_back(stSectionInfo);
+                    cntI++;
+                }
             }
             // TODO: Create struct of PE file 64bit.
             else if (0x20b == wOptionalHeaderType)
@@ -189,5 +220,5 @@ bool CThreadAnalysisFile::OnThreadEventRun(LPVOID lpParam)
         pPEOperatorDlg->SendMessage(WM_FILEHADANALYSISED);
     } //! while "Main work loop" END
 
-    return false;
+    return true;
 } //! CThreadAnalysisFile::OnThreadEventRun END

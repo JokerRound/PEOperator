@@ -32,6 +32,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Static</UseOfMfc>
+    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -186,13 +187,16 @@
     <ClInclude Include="assistFunc.h" />
     <ClInclude Include="HexEdit.h" />
     <ClInclude Include="MacroShare.h" />
+    <ClInclude Include="MoveDirectoryDlg.h" />
+    <ClInclude Include="ProppageDirectoryInfo.h" />
     <ClInclude Include="ProppageFileInfo.h" />
     <ClInclude Include="PEOperator.h" />
     <ClInclude Include="PEOperatorDlg.h" />
     <ClInclude Include="ProppageHeaderInfo.h" />
+    <ClInclude Include="ProppageSectionInfo.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="StructShare.h" />
+    <ClInclude Include="TypeShare.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="ThreadAnalysisFile.h" />
@@ -200,10 +204,13 @@
   <ItemGroup>
     <ClCompile Include="assistFunc.cpp" />
     <ClCompile Include="HexEdit.cpp" />
+    <ClCompile Include="MoveDirectoryDlg.cpp" />
+    <ClCompile Include="ProppageDirectoryInfo.cpp" />
     <ClCompile Include="ProppageFileInfo.cpp" />
     <ClCompile Include="PEOperator.cpp" />
     <ClCompile Include="PEOperatorDlg.cpp" />
     <ClCompile Include="ProppageHeaderInfo.cpp" />
+    <ClCompile Include="ProppageSectionInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -217,6 +224,7 @@
     <ResourceCompile Include="PEOperator.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="res\PEOperator.rc2" />
   </ItemGroup>
   <ItemGroup>

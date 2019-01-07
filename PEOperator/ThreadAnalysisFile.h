@@ -12,7 +12,6 @@ public:
     virtual ~CThreadAnalysisFile();
 
     virtual bool OnThreadEventRun(LPVOID lpParam);
-
 };
 
 #endif // ! THREADANALYSISFILE_H_

@@ -1,3 +1,21 @@
+//******************************************************************************
+// License:     MIT
+// Author:      Hoffman
+// Create Time: 2018-10-29
+// Description: 
+//      The achieve of assist functions.
+//
+// Modify Log:
+//      2018-10-29    Hoffman
+//      Info: a. Add achieve of below functions.
+//              a.1. OutputDebugStringWithInfo();
+//              a.2. GetErrorMessage();
+//              a.3. HexString2Decimal();
+//              a.4. Byte2HexString();
+//              a.5. Word2HexString();
+//              a.6. Dword2HexString();
+//******************************************************************************
+
 #include "stdafx.h"
 #include "assistFunc.h"
 

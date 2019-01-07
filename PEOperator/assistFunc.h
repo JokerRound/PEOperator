@@ -1,7 +1,22 @@
+//******************************************************************************
+// License:     MIT
+// Author:      Hoffman
+// Create Time: 2018-10-29
+// Description: 
+//      The declare of assist functions.
+//
+// Modify Log:
+//      2018-10-29    Hoffman
+//      Info: a. Add below functions.
+//              a.1. Byte2HexString();
+//              a.2. Word2HexString();
+//              a.3. Dword2HexString();
+//******************************************************************************
+
 #pragma once
 #ifndef ASSISTFUNC_H_
 #define ASSISTFUNC_H_
-#include "StructShare.h"
+#include "TypeShare.h"
 #include "MacroShare.h"
 
 void OutputDebugStringWithInfo(_In_ const CString csOuput,

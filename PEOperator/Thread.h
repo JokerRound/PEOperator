@@ -1,7 +1,7 @@
 #pragma once
 #ifndef THREAD_H_
 #define THREAD_H_
-#include "StructShare.h"
+#include "TypeShare.h"
 
 struct tagThreadProcParameter
 {
